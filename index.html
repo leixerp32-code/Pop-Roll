@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>POP ROLL | Professional Ecosystem</title>
+    <script src="[https://cdn.tailwindcss.com"></script]https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root { --neon: #39ff14; --purple: #bc13fe; }
+        body { background: #000; color: #fff; font-family: 'Inter', sans-serif; overflow-x: hidden; }
+        .neon-text { color: var(--neon); text-shadow: 0 0 15px var(--neon); }
+        .glass { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.1); }
+       
+        /* Avatar Logic */
+        #avatar-box { position: fixed; bottom: 20px; left: 20px; z-index: 5000; transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        #avatar-img { width: 95px; filter: drop-shadow(0 0 10px var(--neon)); animation: float 3s infinite ease-in-out; cursor: pointer; }
+        @keyframes float { 0%, 100% { transform: translateY(0) rotate(0); } 50% { transform: translateY(-20px) rotate(5deg); } }
+       
+        .bubble { position: absolute; bottom: 110%; left: 0; background: #fff; color: #000; padding: 12px; border-radius: 15px; font-weight: 900; width: 180px; font-size: 13px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); opacity: 0; pointer-events: none; transition: 0.3s; }
+        .bubble.active { opacity: 1; transform: translateY(-10px); }
+
+        /* Admin Panel */
+        #admin-drawer { position: fixed; bottom: -100%; left: 0; width: 100%; background: #0a0a0a; border-top: 3px solid var(--neon); z-index: 6000; transition: 0.4s ease; padding: 25px; box-shadow: 0 -20px 50px rgba(0,0,0,0.9); }
+        #admin-drawer.open { bottom: 0; }
+        input { background: #1a1a1a; border: 1px solid #333; color: #fff; padding: 10px; border-radius: 8px; width: 100%; margin-bottom: 10px; font-size: 14px; }
+        .btn-action { background: var(--neon); color: #000; font-weight: 900; padding: 12px; border-radius: 8px; width: 100%; text-transform: uppercase; letter-spacing: 1px; }
+    </style>
+</head>
+<body>
+
+    <div id="age-gate" class="fixed inset-0 z-[10000] bg-black flex flex-col items-center justify-center p-6 text-center">
+        <h1 class="text-7xl font-black italic mb-2">POP <span class="neon-text">ROLL</span></h1>
+        <p id="gate-info" class="text-zinc-500 mb-10 tracking-[0.3em] text-xs">ONTARIO LEGAL PROTOCOL 19+</p>
+        <div class="w-full max-w-xs flex flex-col gap-4">
+            <button onclick="validate(true)" class="bg-white text-black font-black py-5 rounded-full text-xl hover:bg-green-500 transition-all">I AM 19+</button>
+            <button onclick="location.href='https://google.com'" class="text-zinc-600 font-bold text-sm">EXIT</button>
+        </div>
+    </div>
+
+    <div id="avatar-box">
+        <div id="msg" class="bubble">STOP! ID PLEASE.</div>
+        <img id="avatar-img" src="https://cdn-icons-png.flaticon.com/512/2503/2503666.png" alt="Staff">
+    </div>
+
+    <div id="main-ui" class="opacity-0 transition-opacity duration-1000">
+        <nav class="p-6 flex justify-between items-center glass sticky top-0 z-50">
+            <div class="text-2xl font-black italic tracking-tighter">POP <span class="text-purple-500">ROLL</span></div>
+            <div class="flex items-center gap-5">
+                <div class="flex bg-zinc-900 rounded-lg p-1 border border-zinc-800">
+                    <button onclick="lang('en')" class="px-3 py-1 text-[10px] font-black">EN</button>
+                    <button onclick="lang('es')" class="px-3 py-1 text-[10px] font-black">ES</button>
+                </div>
+                <div class="relative">
+                    <i class="fa-solid fa-cart-flatbed-suitcases text-2xl text-green-400"></i>
+                    <span id="c-count" class="absolute -top-2 -right-2 bg-purple-600 text-[10px] font-bold px-1.5 rounded-full">0</span>
+                </div>
+            </div>
+        </nav>
+
+        <header class="py-16 px-6 text-center">
+            <h2 id="h-title" class="text-6xl font-black mb-4 uppercase">The Premium <br><span class="neon-text">Ecosystem</span></h2>
+            <p id="h-desc" class="text-zinc-500 italic max-w-md mx-auto">Curating the best for Pickering and the world.</p>
+        </header>
+
+        <section class="max-w-5xl mx-auto p-6">
+            <h3 id="m-title" class="text-3xl font-black mb-8 italic text-yellow-500">REDY MONCHIS</h3>
+            <div class="glass rounded-[40px] overflow-hidden flex flex-col md:flex-row shadow-2xl">
+                <div class="w-full md:w-1/2 h-72">
+                    <img id="m-img" src="https://images.unsplash.com/photo-1599490659223-930b44c007c9?w=800" class="w-full h-full object-cover">
+                </div>
+                <div class="p-10 flex flex-col justify-center w-full md:w-1/2">
+                    <h4 id="m-name" class="text-3xl font-bold mb-2 uppercase">Ultimate Munchie Pack</h4>
+                    <p id="m-desc" class="text-zinc-500 mb-8">Premium selection for your session.</p>
+                    <div class="flex justify-between items-center">
+                        <span id="m-price" class="text-4xl font-black">$24.99</span>
+                        <button onclick="add()" class="bg-white text-black font-black py-3 px-10 rounded-2xl hover:bg-green-500 transition">ADD TO CART</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <footer class="mt-20 p-10 text-center border-t border-zinc-900">
+            <p class="text-zinc-800 text-[10px] mb-4 tracking-[0.5em]">STAFF ONLY AREA BELOW</p>
+            <button onclick="openAdmin()" class="text-zinc-900 hover:text-white transition"><i class="fa-solid fa-key"></i></button>
+        </footer>
+    </div>
+
+    <div id="admin-drawer">
+        <div class="flex justify-between items-center mb-6">
+            <h2 class="text-xl font-black text-green-500">LIVE EDITOR</h2>
+            <button onclick="closeAdmin()" class="text-zinc-500 font-bold">CLOSE</button>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <input type="text" id="in-name" placeholder="Product Name">
+            <input type="text" id="in-price" placeholder="Price (e.g. $20.00)">
+            <input type="text" id="in-desc" placeholder="Short Description">
+            <input type="text" id="in-img" placeholder="Image URL">
+            <button onclick="save()" class="btn-action md:col-span-2">Apply Live Changes</button>
+        </div>
+    </div>
+
+    <script>
+        let items = 0;
+        let current = 'en';
+        const db = {
+            en: { welcome: "Welcome, Connoisseur.", hT: "The Premium <br><span class='neon-text'>Ecosystem</span>", hD: "Curating the best for Pickering and the world.", mTitle: "REDY MONCHIS", add: "ADD TO CART" },
+            es: { welcome: "Bienvenido, Conocedor.", hT: "El Ecosistema <br><span class='neon-text'>Premium</span>", hD: "Curando lo mejor para Pickering y el mundo.", mTitle: "REDY MONCHIS", add: "AÑADIR AL CARRITO" }
+        };
+
+        function validate(ok) {
+            if(!ok) return;
+            document.getElementById('age-gate').classList.add('hidden');
+            document.getElementById('main-ui').classList.remove('opacity-0');
+            // Transformación del Avatar
+            document.getElementById('avatar-img').src = "https://cdn-icons-png.flaticon.com/512/1000/1000941.png";
+            say(db[current].welcome);
+        }
+
+        function lang(l) {
+            current = l;
+            document.getElementById('h-title').innerHTML = db[l].hT;
+            document.getElementById('h-desc').innerText = db[l].hD;
+            document.getElementById('m-title').innerText = db[l].mTitle;
+            say(db[l].welcome);
+        }
+
+        function say(txt) {
+            const b = document.getElementById('msg');
+            b.innerText = txt;
+            b.classList.add('active');
+            setTimeout(() => b.classList.remove('active'), 3000);
+        }
+
+        function add() {
+            items++;
+            document.getElementById('c-count').innerText = items;
+            say(current === 'en' ? "Added to stash!" : "¡Añadido al inventario!");
+        }
+
+        // --- FUNCIONES ADMIN ---
+        function openAdmin() {
+            if(prompt("PASSWORD:") === "admin") {
+                document.getElementById('admin-drawer').classList.add('open');
+                document.getElementById('in-name').value = document.getElementById('m-name').innerText;
+                document.getElementById('in-price').value = document.getElementById('m-price').innerText;
+            }
+        }
+
+        function closeAdmin() { document.getElementById('admin-drawer').classList.remove('open'); }
+
+        function save() {
+            document.getElementById('m-name').innerText = document.getElementById('in-name').value;
+            document.getElementById('m-price').innerText = document.getElementById('in-price').value;
+            document.getElementById('m-desc').innerText = document.getElementById('in-desc').value;
+            if(document.getElementById('in-img').value) document.getElementById('m-img').src = document.getElementById('in-img').value;
+            closeAdmin();
+            say("Changes Live!");
+        }
+    </script>
+</body>
+</html>
